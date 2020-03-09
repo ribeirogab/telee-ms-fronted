@@ -19,4 +19,4 @@ const GeneralReportSchema = new Schema({
   }
 }, { timestamps: true })
 
-module.exports = model(GeneralReportSchema, 'User')
+module.exports = model('User', GeneralReportSchema)

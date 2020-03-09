@@ -13,6 +13,10 @@ const ArticleSchema = new Schema({
     type: String,
     required: true
   },
+  content: {
+    type: Object,
+    required: true
+  },
   comments: [{
     type: String
   }],
@@ -26,4 +30,4 @@ const ArticleSchema = new Schema({
   }
 }, { timestamps: true })
 
-module.exports = model(ArticleSchema, 'Article')
+module.exports = model('Article', ArticleSchema)

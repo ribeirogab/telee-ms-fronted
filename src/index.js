@@ -1,22 +1,11 @@
-require('dotenv').config({
-  path: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env'
-})
-
-const express = require('express')
-const cors = require('cors')
-const mongoose = require('mongoose')
+const database = require('./configs/database')
+const server = require('./configs/server')
 const routes = require('./routes')
+const hooks = require('./configs/hooks')
 
-const app = express()
+database.connect()
 
-mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-odgmv.gcp.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true
-})
+server.use(routes)
+  .listen(3333, console.log('Server is running: http://localhost:3333'))
 
-app.use(cors())
-app.use(express.json())
-app.use(routes)
-
-app.listen(3333, console.log('Server is running: http://localhost:3333'))
+hooks.reports()

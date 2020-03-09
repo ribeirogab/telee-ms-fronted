@@ -27,4 +27,4 @@ const EditorReportSchema = new Schema({
   }
 }, { timestamps: true })
 
-module.exports = model(EditorReportSchema, 'User')
+module.exports = model('User', EditorReportSchema)
