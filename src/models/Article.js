@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose')
 
 const ArticleSchema = new Schema({
-  owner: {
+  writer: {
     type: Schema.Types.ObjectId,
     ref: 'User'
   },

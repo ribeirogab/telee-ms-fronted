@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose')
 
 const GeneralReportSchema = new Schema({
   month: {
-    type: Number,
+    type: String,
     required: true
   },
   numberWords: {
@@ -16,7 +16,11 @@ const GeneralReportSchema = new Schema({
   pendingArticles: {
     type: Number,
     required: true
+  },
+  totalAmountPayable: {
+    type: Number,
+    required: true
   }
 }, { timestamps: true })
 
-module.exports = model('User', GeneralReportSchema)
+module.exports = model('GeneralReport', GeneralReportSchema)

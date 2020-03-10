@@ -6,7 +6,7 @@ module.exports = {
       const users = await User.find()
       return res.json(users)
     } catch (error) {
-      return res.status(400).send({ error, message: 'Error listing users!' })
+      return res.status(400).send({ error: error.message, message: 'Error listing users!' })
     }
   },
 
@@ -16,7 +16,7 @@ module.exports = {
       const user = await User.findById(userId)
       return res.json(user)
     } catch (error) {
-      return res.status(400).send({ error, message: 'Error list user!' })
+      return res.status(400).send({ error: error.message, message: 'Error list user!' })
     }
   },
 
@@ -36,7 +36,7 @@ module.exports = {
 
       return res.json(user)
     } catch (error) {
-      return res.status(400).send({ error, message: 'Error create a new user!' })
+      return res.status(400).send({ error: error.message, message: 'Error create a new user!' })
     }
   },
 

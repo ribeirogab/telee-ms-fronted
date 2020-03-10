@@ -1,17 +1,17 @@
 const { Schema, model } = require('mongoose')
 
-const EditorReportSchema = new Schema({
+const WriterReportSchema = new Schema({
   month: {
-    type: Number,
+    type: String,
     required: true
   },
-  editor: {
+  writer: {
+    type: String,
+    required: true
+  },
+  writerId: {
     type: Schema.Types.ObjectId,
     ref: 'User'
-  },
-  numberWords: {
-    type: Number,
-    required: true
   },
   acceptArticles: {
     type: Number,
@@ -21,10 +21,14 @@ const EditorReportSchema = new Schema({
     type: Number,
     required: true
   },
+  numberWords: {
+    type: Number,
+    required: true
+  },
   salary: {
     type: Number,
     required: true
   }
 }, { timestamps: true })
 
-module.exports = model('User', EditorReportSchema)
+module.exports = model('WriterReport', WriterReportSchema)

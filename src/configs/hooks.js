@@ -1,12 +1,12 @@
-const { editorReports, generalReports } = require('../services/GenerateReports')
+const { writerReports, generalReports } = require('../services/GenerateReports')
 
 module.exports = {
-  reports () {
+  async reports () {
     setInterval(() => {
       const date = new Date()
       if (date.getDate() === 1) {
-        editorReports(date.getDate(), date.getMonth(), date.getFullYear())
-        generalReports(date.getDate(), date.getMonth(), date.getFullYear())
+        writerReports()
+        generalReports()
       }
     }, 86400000)
   }
