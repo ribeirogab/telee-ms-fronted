@@ -1,6 +1,6 @@
 const GeneralReport = require('../models/GeneralReport')
 const WriterReport = require('../models/WriterReport')
-const Article = require('../models/Article')
+const Article = require('../models/Task')
 const User = require('../models/User')
 
 const promiseHelper = require('../utils/promiseHelper')
