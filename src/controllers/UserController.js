@@ -33,7 +33,6 @@ module.exports = {
       const user = await User.create({
         username, name, password, permission
       })
-
       return res.json(user)
     } catch (error) {
       return res.status(400).send({ error: error.message, message: 'Error create a new user!' })
@@ -43,8 +42,9 @@ module.exports = {
   async update (req, res) {
     try {
       const { userId } = req.params
-      const { updatedUser } = req.body
-      const user = await User.findByIdAndUpdate(userId, updatedUser, { new: true })
+      const { ...fileds } = req.body
+      console.log(fileds)
+      const user = await User.findByIdAndUpdate(userId, fileds, { new: true })
       return res.json(user)
     } catch (error) {
       return res.status(400).send({ error: 'Error updating user' })
