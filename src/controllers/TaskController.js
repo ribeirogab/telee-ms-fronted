@@ -1,6 +1,6 @@
 const Task = require('../models/Task')
 
-const countWords = require('../utils/countWords')
+// const countWords = require('../utils/countWords')
 
 module.exports = {
   async index (req, res) {
@@ -26,21 +26,20 @@ module.exports = {
 
   async store (req, res) {
     try {
-      const { type, keyword, subKeywords, guidelines, website, content } = req.body
+      const { type, keyword, subKeywords, website, guidelines, description } = req.body
 
-      const [words, value] = countWords(content)
+      // const [words, value] = countWords(content)
 
       const task = await Task.create({
         type,
         keyword,
         subKeywords,
-        guidelines,
         website,
+        guidelines,
+        description,
         status: 0,
         comments: [],
-        content,
-        words,
-        value
+        content: {}
       })
 
       return res.json(task)
