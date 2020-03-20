@@ -12,8 +12,10 @@ module.exports = {
 
   async show (req, res) {
     try {
-      const { userId } = req.params
-      const user = await User.findById(userId)
+      const user = await User.findById(req.userId)
+      user.createdAt = undefined
+      user.updatedAt = undefined
+      user.__v = undefined
       return res.json(user)
     } catch (error) {
       return res.status(400).send({ error: error.message, message: 'Error list user!' })

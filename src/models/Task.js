@@ -13,13 +13,14 @@ const TaskSchema = new Schema({
     type: String,
     required: true
   },
-  guidelines: [{
-    type: String
-  }],
   website: {
     type: String,
     required: true
   },
+  guidelines: [{
+    type: String
+  }],
+  description: String,
   writer: {
     type: Schema.Types.ObjectId,
     ref: 'User'
@@ -35,14 +36,8 @@ const TaskSchema = new Schema({
     type: Object,
     required: true
   },
-  words: {
-    type: Number,
-    required: true
-  },
-  value: {
-    type: Number,
-    required: true
-  }
+  words: Number,
+  value: Number
 }, { timestamps: true })
 
 module.exports = model('Task', TaskSchema)
