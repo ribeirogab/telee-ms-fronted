@@ -6,7 +6,7 @@ const userRoutes = Router()
 // userRoutes.use(authMiddleware)
 
 userRoutes.get('/user', UserController.index)
-userRoutes.get('/user/:userId', UserController.show)
+userRoutes.get('/user/u/:userId', UserController.show)
 userRoutes.post('/user', UserController.store)
 userRoutes.put('/user/:userId', UserController.update)
 userRoutes.delete('/user/:userId', UserController.destroy)
