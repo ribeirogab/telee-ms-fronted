@@ -48,7 +48,6 @@ module.exports = {
     try {
       const { userId } = req.params
       const { ...fileds } = req.body
-      console.log(fileds)
       const user = await User.findByIdAndUpdate(userId, fileds, { new: true })
       return res.json(user)
     } catch (error) {
