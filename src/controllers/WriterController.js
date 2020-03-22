@@ -4,7 +4,7 @@ module.exports = {
   async index (req, res) {
     try {
       const writers = await User.find({
-        permission: { $lt: 3 }
+        permission: { $lt: 4 }
       })
       return res.json(writers)
     } catch (error) {
@@ -37,7 +37,7 @@ module.exports = {
       const userExists = await User.findOne({ username })
       if (userExists) return res.json(userExists)
 
-      if (permission > 2) permission = 0
+      if (permission > 3) permission = 0
       const writer = await User.create({
         username, name, password, permission
       })
@@ -54,7 +54,6 @@ module.exports = {
 
       const isWriter = await User.findById(writerId)
       if (!isWriter) throw new Error('User does not exist!')
-      if (isWriter.permission > 2) throw new Error('You are not a writer!')
 
       const { name } = req.body
       const writer = await User.findByIdAndUpdate(writerId, { name }, { new: true })
@@ -68,7 +67,7 @@ module.exports = {
   async destroy (req, res) {
     try {
       const havePermission = await User.findById(req.userId)
-      if (havePermission.permission < 3) throw new Error('Only editors and developers can use this route!')
+      if (havePermission.permission < 4) throw new Error('Only editors and developers can use this route!')
 
       const { writerId } = req.params
 

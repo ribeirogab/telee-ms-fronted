@@ -4,7 +4,7 @@ module.exports = {
   async index (req, res) {
     try {
       const editors = await User.find({
-        permission: { $gt: 2 }
+        permission: { $gt: 3 }
       })
       return res.json(editors)
     } catch (error) {
@@ -36,7 +36,7 @@ module.exports = {
       const userExists = await User.findOne({ username })
       if (userExists) return res.json(userExists)
 
-      if (permission < 3 || permission > 5) permission = 3
+      if (permission < 4 || permission > 6) permission = 4
       const editor = await User.create({
         username, name, password, permission
       })
@@ -52,7 +52,7 @@ module.exports = {
       const editorId = req.params.editorId === 'I' ? req.userId : req.params.editorId
       const isEditor = await User.findById(editorId)
       if (!isEditor) throw new Error('User does not exist!')
-      if (isEditor.permission < 3) throw new Error('You are not a editor+!')
+      if (isEditor.permission < 4) throw new Error('You are not a editor+!')
 
       const { name } = req.body
       const editor = await User.findByIdAndUpdate(editorId, { name }, { new: true })
