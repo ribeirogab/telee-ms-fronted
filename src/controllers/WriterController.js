@@ -17,7 +17,7 @@ module.exports = {
       const writerId = req.params.writerId === 'I' ? req.userId : req.params.writerId
       const writer = await User.findById(writerId)
       if (!writer) throw new Error('User does not exist!')
-      if (writer.permission > 2) throw new Error('You are not a writer!')
+      if (writer.permission > 3) throw new Error('You are not a writer!')
 
       writer.createdAt = undefined
       writer.updatedAt = undefined
