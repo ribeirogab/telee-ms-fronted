@@ -1,6 +1,3 @@
-require('dotenv').config({
-  path: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env'
-})
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')

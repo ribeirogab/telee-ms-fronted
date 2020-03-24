@@ -1,16 +1,15 @@
 const Task = require('../models/Task')
-
-// const countWords = require('../utils/countWords')
+const User = require('../models/User')
 
 module.exports = {
   async index (req, res) {
     try {
-      const tasks = await Task.find({
-        status: { $eq: 0 }
-      })
+      const { state } = req.params
+      const status = state === 'uninitiated' ? { $eq: 0 } : state === 'audit' ? { $gt: 1 } : { $gt: -1 }
+      const tasks = await Task.find({ status })
       return res.json(tasks)
     } catch (error) {
-      return res.status(400).send({ error: error.message, message: 'Error listed task!' })
+      return res.status(400).send({ error, message: 'Error list tasks!' })
     }
   },
 
@@ -18,17 +17,19 @@ module.exports = {
     try {
       const { taskId } = req.params
       const task = await Task.findById(taskId)
+      if (!task) throw new Error('Task does not exist!')
       return res.json(task)
     } catch (error) {
-      return res.status(400).send({ error: error.message, message: 'Error listed task!' })
+      return res.status(400).send({ error, message: error.message })
     }
   },
 
   async store (req, res) {
     try {
-      const { type, keyword, subKeywords, website, guidelines, description } = req.body
+      const currentUser = await User.findById(req.userId)
+      if (currentUser < 4) throw new Error('Only editors and developers can use this route!')
 
-      // const [words, value] = countWords(content)
+      const { type, keyword, subKeywords, website, guidelines, description } = req.body
 
       const task = await Task.create({
         type,
@@ -51,21 +52,36 @@ module.exports = {
   async update (req, res) {
     try {
       const { taskId } = req.params
-      const { updatedTask } = req.body
+      const currentUser = await User.findById(req.userId)
+      const currentTask = await Task.findById(taskId)
+
+      if (!currentTask) throw new Error('Task does not exist!')
+      else if (currentUser.permission < 4 && currentTask.writer !== currentUser._id) throw new Error('Writers can only edit their own tasks!')
+
+      const { ...updatedTask } = req.body
       const task = await Task.findByIdAndUpdate(taskId, updatedTask, { new: true })
       return res.json(task)
     } catch (error) {
-      return res.status(400).send({ error: error.message, message: 'Error updating task!' })
+      return res.status(400).send({ error, message: error.message })
     }
   },
 
   async destroy (req, res) {
     try {
+      const currentUser = await User.findById(req.userId)
+      if (currentUser < 4) throw new Error('Only editors and developers can use this route!')
+
       const { taskId } = req.params
+
+      const currentTask = await Task.findById(taskId)
+
+      if (!currentTask) throw new Error('Task does not exist!')
+      if (currentTask.status > 0) throw new Error('Tasks started cannot be deleted!')
+
       await Task.findByIdAndDelete(taskId)
       return res.json({ message: 'Task deleted successfully!' })
     } catch (error) {
-      return res.status(400).send({ error: error.message, message: 'Error deleting task!' })
+      return res.status(400).send({ error, message: error.message })
     }
   }
 }
