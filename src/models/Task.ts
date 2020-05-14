@@ -15,12 +15,19 @@ class Task {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, user => user.tasks, { eager: true })
+  @ManyToOne(() => User, user => user.author_tasks, { eager: true })
   @JoinColumn({ name: 'fk_author' })
   author: User;
 
+  @ManyToOne(() => User, user => user.writer_tasks, { eager: true })
+  @JoinColumn({ name: 'fk_writer' })
+  writer: User;
+
   @Column()
   fk_author: string;
+
+  @Column()
+  fk_writer: string;
 
   @Column()
   keyword: string;
@@ -39,9 +46,6 @@ class Task {
     | 'recused'
     | 'accepted'
     | 'returned';
-
-  @Column()
-  writer: string;
 
   @Column('timestamp with time zone')
   assumed: Date;

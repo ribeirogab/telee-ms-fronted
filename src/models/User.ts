@@ -27,7 +27,10 @@ class User {
   permission: 'writer' | 'editor' | 'administrator';
 
   @OneToMany(() => Task, task => task.fk_author)
-  tasks: Task[];
+  author_tasks: Task[];
+
+  @OneToMany(() => Task, task => task.fk_writer)
+  writer_tasks: Task[];
 
   @CreateDateColumn()
   created_at: Date;

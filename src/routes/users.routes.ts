@@ -37,11 +37,11 @@ usersRouter.post('/', async (req, res) => {
   }
 });
 
-usersRouter.delete('/:id', async (req, res) => {
+usersRouter.delete('/:userId', async (req, res) => {
   try {
-    const { id } = req.params;
+    const { userId } = req.params;
 
-    await new DeleteUserService().execute(id);
+    await new DeleteUserService().execute(userId);
 
     return res.json({ message: 'User deleted with successfuly.' });
   } catch (error) {

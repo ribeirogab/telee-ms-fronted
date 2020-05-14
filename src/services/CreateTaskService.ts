@@ -5,7 +5,7 @@ import User from '../models/User';
 import TasksRepository from '../repositories/TasksRepository';
 
 interface Request {
-  idAuthor: string;
+  authorId: string;
   keyword: string;
   subKeywords: string;
   website: string;
@@ -14,7 +14,7 @@ interface Request {
 
 class CreateTaskService {
   public async execute({
-    idAuthor,
+    authorId,
     keyword,
     subKeywords,
     website,
@@ -23,7 +23,7 @@ class CreateTaskService {
     const tasksRepository = getCustomRepository(TasksRepository);
     const usersRepository = getRepository(User);
 
-    const author = await usersRepository.findOne(idAuthor);
+    const author = await usersRepository.findOne(authorId);
 
     if (!author) {
       throw Error('Invalid author ID.');
@@ -37,7 +37,7 @@ class CreateTaskService {
     }
 
     const task = tasksRepository.create({
-      fk_author: idAuthor,
+      fk_author: authorId,
       keyword,
       sub_keywords: subKeywords,
       website,
