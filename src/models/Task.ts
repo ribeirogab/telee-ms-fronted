@@ -4,15 +4,23 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinColumn,
+  ManyToOne,
 } from 'typeorm';
+
+import User from './User';
 
 @Entity('tasks')
 class Task {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ManyToOne(() => User, user => user.tasks, { eager: true })
+  @JoinColumn({ name: 'fk_author' })
+  author: User;
+
   @Column()
-  author: string;
+  fk_author: string;
 
   @Column()
   keyword: string;

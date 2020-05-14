@@ -4,7 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+
+import Task from './Task';
 
 @Entity('users')
 class User {
@@ -22,6 +25,9 @@ class User {
 
   @Column()
   permission: 'writer' | 'editor' | 'administrator';
+
+  @OneToMany(() => Task, task => task.fk_author)
+  tasks: Task[];
 
   @CreateDateColumn()
   created_at: Date;
