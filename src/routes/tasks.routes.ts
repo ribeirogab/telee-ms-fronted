@@ -33,10 +33,10 @@ tasksRouter.get('/:id', async (req, res) => {
 
 tasksRouter.post('/', async (req, res) => {
   try {
-    const { idAuthor, keyword, subKeywords, website } = req.body;
+    const { authorId, keyword, subKeywords, website } = req.body;
 
     const task = await new CreateTaskService().execute({
-      idAuthor,
+      authorId,
       keyword,
       subKeywords,
       website,
