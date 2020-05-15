@@ -1,9 +1,13 @@
 import { Router } from 'express';
 
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+
 import WriterAssumeTaskService from '../services/WriterAssumeTaskService';
 import UpdateArticleService from '../services/UpdateArticleService';
 
 const taskArticlesRouter = Router();
+
+taskArticlesRouter.use(ensureAuthenticated);
 
 taskArticlesRouter.patch('/:taskId', async (req, res) => {
   try {
