@@ -1,9 +1,13 @@
 import { Router } from 'express';
 import { getRepository } from 'typeorm';
 
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+
 import Update from '../models/Update';
 
 const updatesRouter = Router();
+
+updatesRouter.use(ensureAuthenticated);
 
 updatesRouter.get('/', async (req, res) => {
   const updatesRepository = getRepository(Update);

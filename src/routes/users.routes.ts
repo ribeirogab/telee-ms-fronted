@@ -1,10 +1,14 @@
 import { Router } from 'express';
 
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+
 import ListUserService from '../services/ListUserService';
 import CreateUserService from '../services/CreateUserService';
 import DeleteUserService from '../services/DeleteUserService';
 
 const usersRouter = Router();
+
+usersRouter.use(ensureAuthenticated);
 
 usersRouter.get('/', async (req, res) => {
   try {

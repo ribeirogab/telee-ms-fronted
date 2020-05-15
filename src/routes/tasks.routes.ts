@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { getCustomRepository } from 'typeorm';
 
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+
 import TasksRepository from '../repositories/TasksRepository';
 import ListTaskService from '../services/ListTaskService';
 import CreateTaskService from '../services/CreateTaskService';
@@ -8,6 +10,8 @@ import UpdateTaskService from '../services/UpdateTaskService';
 import DeleteTaskService from '../services/DeleteTaskService';
 
 const tasksRouter = Router();
+
+tasksRouter.use(ensureAuthenticated);
 
 tasksRouter.get('/', async (req, res) => {
   try {
