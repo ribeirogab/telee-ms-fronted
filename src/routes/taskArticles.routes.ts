@@ -10,37 +10,30 @@ const taskArticlesRouter = Router();
 taskArticlesRouter.use(ensureAuthenticated);
 
 taskArticlesRouter.patch('/:taskId', async (req, res) => {
-  try {
-    const { taskId } = req.params;
-    const { writerId } = req.body;
+  const { taskId } = req.params;
+  const writerId = req.user.id;
 
-    const assumedTask = await new WriterAssumeTaskService().execute({
-      taskId,
-      writerId,
-    });
+  const assumedTask = await new WriterAssumeTaskService().execute({
+    taskId,
+    writerId,
+  });
 
-    return res.json(assumedTask);
-  } catch (error) {
-    return res.status(400).json({ message: error.message });
-  }
+  return res.json(assumedTask);
 });
 
 taskArticlesRouter.put('/:taskId', async (req, res) => {
-  try {
-    const { taskId } = req.params;
-    const { writerId, words, article } = req.body;
+  const { taskId } = req.params;
+  const { words, article } = req.body;
+  const writerId = req.user.id;
 
-    const updatedTask = await new UpdateArticleService().execute({
-      taskId,
-      writerId,
-      words,
-      article,
-    });
+  const updatedTask = await new UpdateArticleService().execute({
+    taskId,
+    writerId,
+    words,
+    article,
+  });
 
-    return res.json(updatedTask);
-  } catch (error) {
-    return res.status(400).json({ message: error.message });
-  }
+  return res.json(updatedTask);
 });
 
 export default taskArticlesRouter;

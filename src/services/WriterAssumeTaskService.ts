@@ -1,5 +1,6 @@
 import { getCustomRepository, getRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
 import Task from '../models/Task';
 import User from '../models/User';
 import TasksRepository from '../repositories/TasksRepository';
@@ -17,21 +18,21 @@ class WriterAssumeTaskService {
     const writer = await usersRepository.findOne(writerId);
 
     if (!writer) {
-      throw Error('Invalid writer ID.');
+      throw new AppError('Invalid writer ID.');
     }
 
     if (writer.permission !== 'writer') {
-      throw Error('Only writers can take on tasks.');
+      throw new AppError('Only writers can take on tasks.', 401);
     }
 
     const taskToBeAssumed = await tasksRepository.findOne(taskId);
 
     if (!taskToBeAssumed) {
-      throw Error('Invalid task ID.');
+      throw new AppError('Invalid task ID.');
     }
 
     if (taskToBeAssumed.status !== 'available') {
-      throw Error('Only available tasks can be assumed.');
+      throw new AppError('Only available tasks can be assumed.', 403);
     }
 
     await tasksRepository.update(taskId, {
@@ -43,7 +44,7 @@ class WriterAssumeTaskService {
     const updatedTask = await tasksRepository.findOne(taskId);
 
     if (!updatedTask) {
-      throw Error('Error returning task.');
+      throw new AppError('Error returning task.', 500);
     }
 
     return updatedTask;

@@ -1,10 +1,13 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, getRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
 import Task from '../models/Task';
+import User from '../models/User';
 import TasksRepository from '../repositories/TasksRepository';
 
 interface Request {
-  id: string;
+  taskId: string;
+  userId: string;
   keyword: string;
   subKeywords: string;
   website: string;
@@ -12,17 +15,29 @@ interface Request {
 
 class UpdateTaskService {
   public async execute({
-    id,
+    taskId,
+    userId,
     keyword,
     subKeywords,
     website,
   }: Request): Promise<Task> {
     const tasksRepository = getCustomRepository(TasksRepository);
+    const usersRepository = getRepository(User);
 
-    const taskExists = await tasksRepository.findOne(id);
+    const user = await usersRepository.findOne(userId);
+
+    if (!user) {
+      throw new AppError('Invalid user.');
+    }
+
+    if (user.permission !== 'editor' && user.permission !== 'administrator') {
+      throw new AppError('Only editors and administrators can edit tasks.');
+    }
+
+    const taskExists = await tasksRepository.findOne(taskId);
 
     if (!taskExists) {
-      throw Error('Task does not exists.');
+      throw new AppError('Task does not exists.');
     }
 
     const updatedTask = {

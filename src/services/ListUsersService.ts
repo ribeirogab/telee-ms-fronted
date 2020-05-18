@@ -1,8 +1,9 @@
 import { getRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
 import User from '../models/User';
 
-class ListUserService {
+class ListUsersService {
   public async execute(permission: string | string[] | null): Promise<User[]> {
     const usersRepository = getRepository(User);
 
@@ -16,7 +17,7 @@ class ListUserService {
       permission !== 'editor' &&
       permission !== 'administrator'
     ) {
-      throw Error('Invalid permission');
+      throw new AppError('Invalid permission');
     }
 
     const usersOfThisPermission = await usersRepository.find({
@@ -27,4 +28,4 @@ class ListUserService {
   }
 }
 
-export default ListUserService;
+export default ListUsersService;

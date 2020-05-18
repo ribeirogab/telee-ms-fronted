@@ -1,5 +1,6 @@
 import { getCustomRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
 import Task from '../models/Task';
 import TasksRepository from '../repositories/TasksRepository';
 
@@ -20,7 +21,7 @@ class ListUserService {
       status !== 'accepted' &&
       status !== 'recused'
     ) {
-      throw Error('Invalid status');
+      throw new AppError('Invalid status');
     }
 
     const tasksWithThisStatus = await tasksRepository.find({
