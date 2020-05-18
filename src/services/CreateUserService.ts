@@ -1,6 +1,7 @@
 import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 
+import AppError from '../errors/AppError';
 import User from '../models/User';
 
 interface Request {
@@ -22,7 +23,7 @@ class CreateUserService {
       permission !== 'editor' &&
       permission !== 'administrator'
     ) {
-      throw Error('Invalid permission');
+      throw new AppError('Invalid permission', 401);
     }
 
     const usersRepository = getRepository(User);
@@ -32,7 +33,7 @@ class CreateUserService {
     });
 
     if (usernameExists) {
-      throw Error('Username is already exists.');
+      throw new AppError('Username is already exists.');
     }
 
     const hashedPassword = await hash(password, 8);

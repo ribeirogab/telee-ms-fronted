@@ -1,5 +1,6 @@
 import { getRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
 import User from '../models/User';
 
 class DeleteUserService {
@@ -9,11 +10,11 @@ class DeleteUserService {
     const userToBeDeleted = await usersRepository.findOne(userId);
 
     if (!userToBeDeleted) {
-      throw Error('User does not exists.');
+      throw new AppError('User does not exists.');
     }
 
     if (userToBeDeleted.permission === 'administrator') {
-      throw Error('A administrator does not to be deleted');
+      throw new AppError('A administrator does not to be deleted', 403);
     }
 
     await usersRepository.remove(userToBeDeleted);

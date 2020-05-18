@@ -1,5 +1,6 @@
 import { getCustomRepository, getRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
 import Task from '../models/Task';
 import User from '../models/User';
 import TasksRepository from '../repositories/TasksRepository';
@@ -26,14 +27,17 @@ class CreateTaskService {
     const author = await usersRepository.findOne(authorId);
 
     if (!author) {
-      throw Error('Invalid author ID.');
+      throw new AppError('Invalid author ID.');
     }
 
     if (
       author.permission !== 'editor' &&
       author.permission !== 'administrator'
     ) {
-      throw Error('Only editors and administrators can create tasks.');
+      throw new AppError(
+        'Only editors and administrators can create tasks.',
+        401,
+      );
     }
 
     const task = tasksRepository.create({

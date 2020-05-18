@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
-import ListUserService from '../services/ListUserService';
+import ListUsersService from '../services/ListUsersService';
 import CreateUserService from '../services/CreateUserService';
 import DeleteUserService from '../services/DeleteUserService';
 
@@ -11,46 +11,34 @@ const usersRouter = Router();
 usersRouter.use(ensureAuthenticated);
 
 usersRouter.get('/', async (req, res) => {
-  try {
-    const { permission } = req.headers;
+  const { permission } = req.headers;
 
-    const users = await new ListUserService().execute(permission || null);
+  const users = await new ListUsersService().execute(permission || null);
 
-    return res.json(users);
-  } catch (error) {
-    return res.status(400).json({ message: error.message });
-  }
+  return res.json(users);
 });
 
 usersRouter.post('/', async (req, res) => {
-  try {
-    const { name, username, password, permission } = req.body;
+  const { name, username, password, permission } = req.body;
 
-    const user = await new CreateUserService().execute({
-      name,
-      username,
-      password,
-      permission,
-    });
+  const user = await new CreateUserService().execute({
+    name,
+    username,
+    password,
+    permission,
+  });
 
-    delete user.password;
+  delete user.password;
 
-    return res.json(user);
-  } catch (error) {
-    return res.status(400).json({ message: error.message });
-  }
+  return res.json(user);
 });
 
 usersRouter.delete('/:userId', async (req, res) => {
-  try {
-    const { userId } = req.params;
+  const { userId } = req.params;
 
-    await new DeleteUserService().execute(userId);
+  await new DeleteUserService().execute(userId);
 
-    return res.json({ message: 'User deleted with successfuly.' });
-  } catch (error) {
-    return res.status(400).json({ message: error.message });
-  }
+  return res.status(204).send();
 });
 
 export default usersRouter;

@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
+import AppError from '../errors/AppError';
 import User from '../models/User';
 
 interface Request {
@@ -18,11 +19,16 @@ class CreateSessionService {
   public async execute({ username, password }: Request): Promise<Response> {
     const usersRepository = getRepository(User);
 
-    const user = await usersRepository.findOne({ where: { username } });
-    if (!user) throw Error('Wrong email or password.');
+    const user = await usersRepository
+      .createQueryBuilder('user')
+      .addSelect('user.password')
+      .where('user.username = :username', { username })
+      .getOne();
+
+    if (!user) throw new AppError('Wrong email or password.');
 
     const matchingPasswords = await compare(password, user.password);
-    if (!matchingPasswords) throw Error('Wrong email or password.');
+    if (!matchingPasswords) throw new AppError('Wrong email or password.');
 
     try {
       const token = sign({}, process.env.SECRET as string, {
@@ -30,9 +36,11 @@ class CreateSessionService {
         expiresIn: '1d',
       });
 
+      delete user.password;
+
       return { user, token };
     } catch (error) {
-      throw Error('Error generating token.');
+      throw new AppError('Error generating token.');
     }
   }
 }
