@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
+import ListOneUserService from '../services/ListOneUserService';
 import ListUsersService from '../services/ListUsersService';
 import CreateUserService from '../services/CreateUserService';
 import DeleteUserService from '../services/DeleteUserService';
@@ -9,6 +10,14 @@ import DeleteUserService from '../services/DeleteUserService';
 const usersRouter = Router();
 
 usersRouter.use(ensureAuthenticated);
+
+usersRouter.get('/token', async (req, res) => {
+  const userId = req.user.id;
+
+  const user = await new ListOneUserService().execute(userId);
+
+  return res.json(user);
+});
 
 usersRouter.get('/', async (req, res) => {
   const { permission } = req.headers;

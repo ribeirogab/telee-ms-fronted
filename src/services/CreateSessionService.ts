@@ -31,10 +31,14 @@ class CreateSessionService {
     if (!matchingPasswords) throw new AppError('Wrong email or password.');
 
     try {
-      const token = sign({}, process.env.SECRET as string, {
-        subject: user.id,
-        expiresIn: '1d',
-      });
+      const token = sign(
+        { permission: user.permission },
+        process.env.SECRET as string,
+        {
+          subject: user.id,
+          expiresIn: '1d',
+        },
+      );
 
       delete user.password;
 
