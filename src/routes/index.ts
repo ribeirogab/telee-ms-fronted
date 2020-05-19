@@ -12,6 +12,6 @@ routes.use('/sessions', sessionsRouter);
 routes.use('/users', usersRouter);
 routes.use('/updates', updatesRouter);
 routes.use('/tasks', tasksRouter);
-routes.use('/articles', taskArticlesRouter);
+routes.use('/tasks/article', taskArticlesRouter);
 
 export default routes;
