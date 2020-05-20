@@ -11,8 +11,8 @@ const usersRouter = Router();
 
 usersRouter.use(ensureAuthenticated);
 
-usersRouter.get('/token', async (req, res) => {
-  const userId = req.user.id;
+usersRouter.get('/:userId', async (req, res) => {
+  const { userId } = req.params;
 
   const user = await new ListOneUserService().execute(userId);
 
