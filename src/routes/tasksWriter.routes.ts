@@ -4,12 +4,23 @@ import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 import WriterAssumeTaskService from '../services/WriterAssumeTaskService';
 import UpdateArticleService from '../services/UpdateArticleService';
+import ArticlesByWriterService from '../services/ArticlesByWriterService';
 
-const taskArticlesRouter = Router();
+const tasksWriter = Router();
 
-taskArticlesRouter.use(ensureAuthenticated);
+tasksWriter.use(ensureAuthenticated);
 
-taskArticlesRouter.patch('/:taskId', async (req, res) => {
+tasksWriter.get('/', async (req, res) => {
+  const writerId = req.user.id;
+
+  const tasksByThisWriter = await new ArticlesByWriterService().execute(
+    writerId,
+  );
+
+  return res.json(tasksByThisWriter);
+});
+
+tasksWriter.patch('/:taskId', async (req, res) => {
   const { taskId } = req.params;
   const writerId = req.user.id;
 
@@ -21,7 +32,7 @@ taskArticlesRouter.patch('/:taskId', async (req, res) => {
   return res.json(assumedTask);
 });
 
-taskArticlesRouter.put('/:taskId', async (req, res) => {
+tasksWriter.put('/:taskId', async (req, res) => {
   const { taskId } = req.params;
   const { words, article } = req.body;
   const writerId = req.user.id;
@@ -36,4 +47,4 @@ taskArticlesRouter.put('/:taskId', async (req, res) => {
   return res.json(updatedTask);
 });
 
-export default taskArticlesRouter;
+export default tasksWriter;

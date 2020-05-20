@@ -32,7 +32,7 @@ class CreateSessionService {
 
     try {
       const token = sign(
-        { permission: user.permission },
+        { nameUser: user.name, permission: user.permission },
         process.env.SECRET as string,
         {
           subject: user.id,
