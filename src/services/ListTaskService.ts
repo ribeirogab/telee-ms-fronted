@@ -1,12 +1,11 @@
-import { getCustomRepository } from 'typeorm';
+import { getRepository } from 'typeorm';
 
 import AppError from '../errors/AppError';
 import Task from '../models/Task';
-import TasksRepository from '../repositories/TasksRepository';
 
 class ListUserService {
   public async execute(status: string | string[] | undefined): Promise<Task[]> {
-    const tasksRepository = getCustomRepository(TasksRepository);
+    const tasksRepository = getRepository(Task);
 
     if (!status) {
       const allTasks = await tasksRepository.find();
