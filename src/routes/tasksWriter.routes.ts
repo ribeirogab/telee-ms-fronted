@@ -3,6 +3,7 @@ import { Router } from 'express';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 import WriterAssumeTaskService from '../services/WriterAssumeTaskService';
+import WriterDeliverTaskService from '../services/WriterDeliverTaskService';
 import UpdateArticleService from '../services/UpdateArticleService';
 import ArticlesByWriterService from '../services/ArticlesByWriterService';
 
@@ -30,6 +31,18 @@ tasksWriter.patch('/:taskId', async (req, res) => {
   });
 
   return res.json(assumedTask);
+});
+
+tasksWriter.patch('/deliver/:taskId', async (req, res) => {
+  const { taskId } = req.params;
+  const writerId = req.user.id;
+
+  const deliveredTask = await new WriterDeliverTaskService().execute({
+    taskId,
+    writerId,
+  });
+
+  return res.json(deliveredTask);
 });
 
 tasksWriter.put('/:taskId', async (req, res) => {

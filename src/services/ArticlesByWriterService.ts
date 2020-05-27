@@ -1,11 +1,10 @@
-import { getCustomRepository } from 'typeorm';
+import { getRepository } from 'typeorm';
 
 import Task from '../models/Task';
-import TasksRepository from '../repositories/TasksRepository';
 
 class ArticlesByThisWriterService {
   public async execute(writerId: string): Promise<Task[]> {
-    const tasksRepository = getCustomRepository(TasksRepository);
+    const tasksRepository = getRepository(Task);
 
     const tasksByWriter = await tasksRepository.find({
       where: { fk_writer: writerId },

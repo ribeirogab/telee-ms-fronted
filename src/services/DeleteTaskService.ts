@@ -1,8 +1,8 @@
-import { getCustomRepository, getRepository } from 'typeorm';
+import { getRepository } from 'typeorm';
 
 import AppError from '../errors/AppError';
 import User from '../models/User';
-import TasksRepository from '../repositories/TasksRepository';
+import Task from '../models/Task';
 
 interface Request {
   taskId: string;
@@ -11,7 +11,7 @@ interface Request {
 
 class DeleteTaskService {
   public async execute({ taskId, userId }: Request): Promise<void> {
-    const tasksRepository = getCustomRepository(TasksRepository);
+    const tasksRepository = getRepository(Task);
     const usersRepository = getRepository(User);
 
     const user = await usersRepository.findOne(userId);

@@ -1,9 +1,8 @@
-import { getCustomRepository, getRepository } from 'typeorm';
+import { getRepository } from 'typeorm';
 
 import AppError from '../errors/AppError';
 import Task from '../models/Task';
 import User from '../models/User';
-import TasksRepository from '../repositories/TasksRepository';
 
 interface Request {
   authorId: string;
@@ -21,7 +20,7 @@ class CreateTaskService {
     website,
     status,
   }: Request): Promise<Task> {
-    const tasksRepository = getCustomRepository(TasksRepository);
+    const tasksRepository = getRepository(Task);
     const usersRepository = getRepository(User);
 
     const author = await usersRepository.findOne(authorId);

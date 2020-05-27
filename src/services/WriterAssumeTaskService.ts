@@ -1,9 +1,8 @@
-import { getCustomRepository, getRepository } from 'typeorm';
+import { getRepository } from 'typeorm';
 
 import AppError from '../errors/AppError';
 import Task from '../models/Task';
 import User from '../models/User';
-import TasksRepository from '../repositories/TasksRepository';
 
 interface Request {
   taskId: string;
@@ -13,7 +12,7 @@ interface Request {
 class WriterAssumeTaskService {
   public async execute({ taskId, writerId }: Request): Promise<Task> {
     const usersRepository = getRepository(User);
-    const tasksRepository = getCustomRepository(TasksRepository);
+    const tasksRepository = getRepository(Task);
 
     const writer = await usersRepository.findOne(writerId);
 

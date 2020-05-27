@@ -1,13 +1,15 @@
 import { Router } from 'express';
-import { getCustomRepository } from 'typeorm';
+import { getRepository } from 'typeorm';
 
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
-import TasksRepository from '../repositories/TasksRepository';
+import Task from '../models/Task';
+
 import ListTaskService from '../services/ListTaskService';
 import CreateTaskService from '../services/CreateTaskService';
 import UpdateTaskService from '../services/UpdateTaskService';
 import DeleteTaskService from '../services/DeleteTaskService';
+import AuditTaskService from '../services/AuditTaskService';
 
 const tasksRouter = Router();
 
@@ -24,7 +26,7 @@ tasksRouter.get('/', async (req, res) => {
 tasksRouter.get('/:id', async (req, res) => {
   const { id } = req.params;
 
-  const tasksRepository = getCustomRepository(TasksRepository);
+  const tasksRepository = getRepository(Task);
 
   const task = await tasksRepository.findOne(id);
 
@@ -57,6 +59,20 @@ tasksRouter.put('/:taskId', async (req, res) => {
     keyword,
     subKeywords,
     website,
+  });
+
+  return res.json(task);
+});
+
+tasksRouter.patch('/:taskId', async (req, res) => {
+  const { taskId } = req.params;
+  const { status } = req.body;
+  const userId = req.user.id;
+
+  const task = await new AuditTaskService().execute({
+    taskId,
+    userId,
+    status,
   });
 
   return res.json(task);
