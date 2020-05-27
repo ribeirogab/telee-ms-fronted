@@ -1,7 +1,7 @@
 import * as PostgressConnectionStringParser from 'pg-connection-string';
 import { createConnection } from 'typeorm';
 
-if (process.env.NODE_ENV === 'dev') {
+if (process.env.NODE_ENV !== 'dev') {
   const databaseUrl: string = process.env.DATABASE_URL as string;
   const connectionOptions = PostgressConnectionStringParser.parse(databaseUrl);
 
@@ -13,7 +13,11 @@ if (process.env.NODE_ENV === 'dev') {
     password: connectionOptions.password,
     database: connectionOptions.database as string,
     synchronize: true,
-    entities: ['target/entity/**/*.js'],
+    entities: ['./dist/models/*.js'],
+    migrations: ['./dist/database/migrations/*.js'],
+    cli: {
+      migrationsDir: './dist/database/migrations',
+    },
     extra: {
       ssl: true,
     },
