@@ -14,4 +14,8 @@ routes.use('/updates', updatesRouter);
 routes.use('/tasks', tasksRouter);
 routes.use('/tasks-writer', tasksWriter);
 
+routes.get('/', (req, res) => {
+  res.json({ isRunning: true });
+});
+
 export default routes;
