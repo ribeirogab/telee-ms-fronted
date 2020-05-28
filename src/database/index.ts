@@ -1,8 +1,6 @@
 import { createConnection, getConnectionOptions } from 'typeorm';
 import * as PostgressConnectionStringParser from 'pg-connection-string';
 
-import User from '../models/User';
-
 async function connect(): Promise<void> {
   const connectionOptions = await getConnectionOptions();
 
@@ -30,20 +28,6 @@ async function connect(): Promise<void> {
 
   const connection = await createConnection(connectionOptions);
   await connection.runMigrations();
-
-  await connection
-    .createQueryBuilder()
-    .insert()
-    .into(User)
-    .values([
-      {
-        username: process.env.ADMIN_USERNAME,
-        name: process.env.ADMIN_NAME,
-        password: process.env.ADMIN_PASSWORD,
-        permission: 'administrator',
-      },
-    ])
-    .execute();
 }
 
 connect();
