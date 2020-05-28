@@ -1,39 +1,49 @@
+import { createConnection, getConnectionOptions } from 'typeorm';
 import * as PostgressConnectionStringParser from 'pg-connection-string';
-import { createConnection } from 'typeorm';
 
-if (process.env.NODE_ENV !== 'dev') {
-  const databaseUrl: string = process.env.DATABASE_URL as string;
-  const connectionOptions = PostgressConnectionStringParser.parse(databaseUrl);
+import User from '../models/User';
 
-  createConnection({
-    type: 'postgres',
-    host: connectionOptions.host as string,
-    port: Number(connectionOptions.port),
-    username: connectionOptions.user,
-    password: connectionOptions.password,
-    database: connectionOptions.database as string,
-    synchronize: true,
-    entities: ['./dist/models/*.js'],
-    migrations: ['./dist/database/migrations/*.js'],
-    cli: {
-      migrationsDir: './dist/database/migrations',
-    },
-    extra: {
-      ssl: true,
-    },
-  });
-} else {
-  createConnection({
-    type: 'postgres',
-    host: 'localhost',
-    port: 5432,
-    username: 'postgres',
-    password: 'telee',
-    database: 'telee',
-    entities: ['./src/models/*.ts'],
-    migrations: ['./src/database/migrations/*.ts'],
-    cli: {
-      migrationsDir: './src/database/migrations',
-    },
-  });
+async function connect(): Promise<void> {
+  const connectionOptions = await getConnectionOptions();
+
+  if (process.env.NODE_ENV !== 'dev') {
+    const databaseUrl: string = process.env.DATABASE_URL as string;
+    const configDatabaseOptions = PostgressConnectionStringParser.parse(
+      databaseUrl,
+    );
+
+    Object.assign(connectionOptions, {
+      host: configDatabaseOptions.host,
+      port: Number(configDatabaseOptions.port),
+      username: configDatabaseOptions.user,
+      password: configDatabaseOptions.password,
+      database: configDatabaseOptions.database,
+      entities: ['./dist/models/*.js'],
+      migrations: ['./dist/database/migrations/*.js'],
+      cli: { migrationsDir: './dist/database/migrations' },
+      synchronize: true,
+      extra: {
+        ssl: true,
+      },
+    });
+  }
+
+  const connection = await createConnection(connectionOptions);
+  await connection.runMigrations();
+
+  await connection
+    .createQueryBuilder()
+    .insert()
+    .into(User)
+    .values([
+      {
+        username: process.env.ADMIN_USERNAME,
+        name: process.env.ADMIN_NAME,
+        password: process.env.ADMIN_PASSWORD,
+        permission: 'administrator',
+      },
+    ])
+    .execute();
 }
+
+connect();
