@@ -33,19 +33,29 @@ async function connect(): Promise<void> {
   const connection = await createConnection(connectionOptions);
   await connection.runMigrations();
 
-  await connection
-    .createQueryBuilder()
-    .insert()
-    .into(User)
-    .values([
-      {
-        username: process.env.ADMIN_USERNAME,
-        name: process.env.ADMIN_NAME,
-        password: process.env.ADMIN_PASSWORD,
-        permission: 'administrator',
-      },
-    ])
-    .execute();
+  const firstUser = await connection
+    .getRepository(User)
+    .createQueryBuilder('user')
+    .where('user.username = :username', {
+      username: process.env.ADMIN_USERNAME,
+    })
+    .getOne();
+
+  if (!firstUser) {
+    await connection
+      .createQueryBuilder()
+      .insert()
+      .into(User)
+      .values([
+        {
+          username: process.env.ADMIN_USERNAME,
+          name: process.env.ADMIN_NAME,
+          password: process.env.ADMIN_PASSWORD,
+          permission: 'administrator',
+        },
+      ])
+      .execute();
+  }
 }
 
 connect();
