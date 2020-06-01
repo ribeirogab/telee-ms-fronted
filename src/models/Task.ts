@@ -19,15 +19,8 @@ class Task {
   @JoinColumn({ name: 'fk_author' })
   author: User;
 
-  @ManyToOne(() => User, user => user.writer_tasks, { eager: true })
-  @JoinColumn({ name: 'fk_writer' })
-  writer: User;
-
   @Column()
   fk_author: string;
-
-  @Column()
-  fk_writer: string;
 
   @Column()
   keyword: string;
@@ -46,21 +39,6 @@ class Task {
     | 'recused'
     | 'accepted'
     | 'returned';
-
-  @Column('timestamp with time zone')
-  assumed: Date;
-
-  @Column('timestamp with time zone')
-  delivered: Date;
-
-  @Column('int')
-  words: number;
-
-  @Column('decimal')
-  value: number;
-
-  @Column('text')
-  article: string;
 
   @CreateDateColumn()
   created_at: Date;

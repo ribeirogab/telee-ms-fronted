@@ -5,25 +5,25 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export default class AlterAuthorToForeignKeyAuthor1589462825116
+export default class AlterWriterToFKWriterInArticles1591023855881
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropColumn('tasks', 'author');
+    await queryRunner.dropColumn('articles', 'writer');
 
     await queryRunner.addColumn(
-      'tasks',
+      'articles',
       new TableColumn({
-        name: 'fk_author',
+        name: 'fk_writer',
         type: 'uuid',
         isNullable: true,
       }),
     );
 
     await queryRunner.createForeignKey(
-      'tasks',
+      'articles',
       new TableForeignKey({
-        name: 'task_author',
-        columnNames: ['fk_author'],
+        name: 'article_writer',
+        columnNames: ['fk_writer'],
         referencedColumnNames: ['id'],
         referencedTableName: 'users',
         onUpdate: 'CASCADE',
@@ -33,15 +33,16 @@ export default class AlterAuthorToForeignKeyAuthor1589462825116
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('tasks', 'task_author');
+    await queryRunner.dropForeignKey('articles', 'article_writer');
 
-    await queryRunner.dropColumn('tasks', 'fk_author');
+    await queryRunner.dropColumn('articles', 'fk_writer');
 
     await queryRunner.addColumn(
-      'tasks',
+      'articles',
       new TableColumn({
-        name: 'author',
+        name: 'writer',
         type: 'varchar',
+        isNullable: true,
       }),
     );
   }
