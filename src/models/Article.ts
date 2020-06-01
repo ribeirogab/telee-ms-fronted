@@ -17,7 +17,7 @@ class Article {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, user => user.writer_tasks, { eager: true })
+  @ManyToOne(() => User, user => user.writer_articles, { eager: true })
   @JoinColumn({ name: 'fk_writer' })
   writer: User;
 

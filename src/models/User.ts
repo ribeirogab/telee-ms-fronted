@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 
 import Task from './Task';
+import Article from './Article';
 
 @Entity('users')
 class User {
@@ -29,8 +30,8 @@ class User {
   @OneToMany(() => Task, task => task.fk_author)
   author_tasks: Task[];
 
-  @OneToMany(() => Task, task => task.fk_writer)
-  writer_tasks: Task[];
+  @OneToMany(() => Article, task => task.fk_writer)
+  writer_articles: Article[];
 
   @CreateDateColumn()
   created_at: Date;
