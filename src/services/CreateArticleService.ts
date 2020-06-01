@@ -50,7 +50,7 @@ class CreateTaskService {
       words: 0,
       value: 0,
       article: '',
-      delivered_at: '...',
+      delivered_at: new Date(),
     });
 
     task.status = 'writing';
