@@ -30,7 +30,7 @@ class User {
   @OneToMany(() => Task, task => task.fk_author)
   author_tasks: Task[];
 
-  @OneToMany(() => Article, task => task.fk_writer)
+  @OneToMany(() => Article, article => article.fk_writer)
   writer_articles: Article[];
 
   @CreateDateColumn()
