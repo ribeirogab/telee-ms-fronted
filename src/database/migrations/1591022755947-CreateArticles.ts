@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreateTasks1589388636673 implements MigrationInterface {
+export default class CreateArticles1591022755947 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'tasks',
+        name: 'articles',
         columns: [
           {
             name: 'id',
@@ -14,57 +14,28 @@ export default class CreateTasks1589388636673 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'author',
-            type: 'varchar',
-          },
-          {
-            name: 'keyword',
-            type: 'varchar',
-          },
-          {
-            name: 'sub_keywords',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'website',
-            type: 'varchar',
-          },
-          {
-            name: 'status',
-            type: 'varchar',
-          },
-          {
             name: 'writer',
             type: 'varchar',
             isNullable: true,
           },
           {
-            name: 'assumed',
-            type: 'timestamp with time zone',
-            isNullable: true,
-          },
-          {
-            name: 'delivered',
-            type: 'timestamp with time zone',
+            name: 'task',
+            type: 'varchar',
             isNullable: true,
           },
           {
             name: 'words',
             type: 'int',
-            isNullable: true,
           },
           {
             name: 'value',
             type: 'decimal',
             precision: 10,
             scale: 2,
-            isNullable: true,
           },
           {
             name: 'article',
             type: 'text',
-            isNullable: true,
           },
           {
             name: 'created_at',
@@ -75,6 +46,11 @@ export default class CreateTasks1589388636673 implements MigrationInterface {
             name: 'updated_at',
             type: 'timestamp',
             default: 'now()',
+          },
+          {
+            name: 'delivered_at',
+            type: 'timestamp with time zone',
+            isNullable: true,
           },
         ],
       }),
