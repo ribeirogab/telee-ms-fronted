@@ -3,6 +3,7 @@ import * as PostgressConnectionStringParser from 'pg-connection-string';
 
 import User from '../models/User';
 import Task from '../models/Task';
+import Article from '../models/Article';
 import Update from '../models/Update';
 
 async function connect(): Promise<void> {
@@ -20,7 +21,7 @@ async function connect(): Promise<void> {
       username: configDatabaseOptions.user,
       password: configDatabaseOptions.password,
       database: configDatabaseOptions.database,
-      entities: [Task, Update, User],
+      entities: [Task, Article, Update, User],
       migrations: ['./dist/database/migrations/*.js}'],
       cli: { migrationsDir: './dist/database/migrations' },
       synchronize: true,
