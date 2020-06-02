@@ -42,10 +42,11 @@ usersRouter.post('/', async (req, res) => {
   return res.json(user);
 });
 
-usersRouter.delete('/:userId', async (req, res) => {
-  const { userId } = req.params;
+usersRouter.delete('/:userIdToBeDeleted', async (req, res) => {
+  const { userIdToBeDeleted } = req.params;
+  const userId = req.user.id;
 
-  await new DeleteUserService().execute(userId);
+  await new DeleteUserService().execute({ userId, userIdToBeDeleted });
 
   return res.status(204).send();
 });

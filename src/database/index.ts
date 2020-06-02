@@ -52,7 +52,7 @@ async function connect(): Promise<void> {
           username: process.env.ADMIN_USERNAME,
           name: process.env.ADMIN_NAME,
           password: process.env.ADMIN_PASSWORD,
-          permission: 'administrator',
+          permission: 'developer',
         },
       ])
       .execute();

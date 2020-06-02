@@ -25,7 +25,7 @@ class User {
   password: string;
 
   @Column()
-  permission: 'writer' | 'editor' | 'administrator';
+  permission: 'writer' | 'editor' | 'administrator' | 'developer';
 
   @OneToMany(() => Task, task => task.fk_author)
   author_tasks: Task[];
