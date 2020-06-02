@@ -7,15 +7,16 @@ import Article from '../models/Article';
 import CreateArticleService from '../services/CreateArticleService';
 import UpdateArticleService from '../services/UpdateArticleService';
 import DeliverArticleService from '../services/DeliverArticleService';
+import ListArticleService from '../services/ListArticleService';
 
 const articlesRouter = Router();
 
 articlesRouter.use(ensureAuthenticated);
 
 articlesRouter.get('/', async (req, res) => {
-  const articlesRepository = getRepository(Article);
+  const { status } = req.headers;
 
-  const articles = await articlesRepository.find();
+  const articles = await new ListArticleService().execute(status);
 
   return res.json(articles);
 });

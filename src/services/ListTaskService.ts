@@ -3,7 +3,7 @@ import { getRepository } from 'typeorm';
 import AppError from '../errors/AppError';
 import Task from '../models/Task';
 
-class ListUserService {
+class ListTaskService {
   public async execute(status: string | string[] | undefined): Promise<Task[]> {
     const tasksRepository = getRepository(Task);
 
@@ -31,4 +31,4 @@ class ListUserService {
   }
 }
 
-export default ListUserService;
+export default ListTaskService;

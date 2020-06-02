@@ -23,7 +23,7 @@ class Article {
 
   @OneToOne(() => Task, task => task, { eager: true })
   @JoinColumn({ name: 'fk_task' })
-  task: User;
+  task: Task;
 
   @Column()
   fk_writer: string;
