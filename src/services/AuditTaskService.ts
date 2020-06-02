@@ -19,7 +19,11 @@ class EditorAuditTaskService {
 
     if (!user) throw new AppError('User does not exists');
 
-    if (user.permission !== 'editor' && user.permission !== 'administrator')
+    if (
+      user.permission !== 'editor' &&
+      user.permission !== 'administrator' &&
+      user.permission !== 'developer'
+    )
       throw new AppError('Only editors can audit tasks', 401);
 
     const task = await tasksRepository.findOne(taskId);

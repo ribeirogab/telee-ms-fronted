@@ -16,7 +16,8 @@ class ListUsersService {
     if (
       user.permission !== 'writer' &&
       user.permission !== 'editor' &&
-      user.permission !== 'administrator'
+      user.permission !== 'administrator' &&
+      user.permission !== 'developer'
     ) {
       throw new AppError('Invalid permission');
     }

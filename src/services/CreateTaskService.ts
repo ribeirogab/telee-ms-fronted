@@ -31,7 +31,8 @@ class CreateTaskService {
 
     if (
       author.permission !== 'editor' &&
-      author.permission !== 'administrator'
+      author.permission !== 'administrator' &&
+      author.permission !== 'developer'
     ) {
       throw new AppError(
         'Only editors and administrators can create tasks.',

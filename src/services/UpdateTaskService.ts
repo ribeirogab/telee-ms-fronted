@@ -29,7 +29,11 @@ class UpdateTaskService {
       throw new AppError('Invalid user.');
     }
 
-    if (user.permission !== 'editor' && user.permission !== 'administrator') {
+    if (
+      user.permission !== 'editor' &&
+      user.permission !== 'administrator' &&
+      user.permission !== 'developer'
+    ) {
       throw new AppError('Only editors and administrators can edit tasks.');
     }
 
