@@ -7,7 +7,7 @@ import User from '../models/User';
 interface Request {
   taskId: string;
   userId: string;
-  status: 'recused' | 'accepted' | 'returned';
+  status: 'refused' | 'okay' | 'returned';
 }
 
 class EditorAuditTaskService {

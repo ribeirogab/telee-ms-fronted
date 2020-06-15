@@ -45,11 +45,11 @@ class UpdateArticleService {
 
     if (
       taskOwnerOfTheArticle.status === 'available' ||
-      taskOwnerOfTheArticle.status === 'accepted' ||
-      taskOwnerOfTheArticle.status === 'recused'
+      taskOwnerOfTheArticle.status === 'okay' ||
+      taskOwnerOfTheArticle.status === 'refused'
     ) {
       throw new AppError(
-        'Tasks with status: available, accepted, recused.\nCannot be edited.',
+        'Tasks with status: available, okay, refused.\nCannot be edited.',
         403,
       );
     }

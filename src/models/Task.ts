@@ -36,9 +36,10 @@ class Task {
     | 'available'
     | 'writing'
     | 'pending'
-    | 'recused'
-    | 'accepted'
-    | 'returned';
+    | 'returned'
+    | 'refused'
+    | 'okay'
+    | 'published';
 
   @CreateDateColumn()
   created_at: Date;

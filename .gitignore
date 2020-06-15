@@ -5,3 +5,6 @@ node_modules
 
 build
 dist
+
+src/services/CreatePageService.ts
+src/routes/wpPages.routes.ts

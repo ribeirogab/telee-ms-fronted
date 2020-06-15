@@ -16,9 +16,10 @@ class ListTaskService {
       status !== 'available' &&
       status !== 'writing' &&
       status !== 'pending' &&
-      status !== 'returned' &&
-      status !== 'accepted' &&
-      status !== 'recused'
+      status !== 'refused' &&
+      status !== 'okay' &&
+      status !== 'recused' &&
+      status !== 'published'
     ) {
       throw new AppError('Invalid status');
     }

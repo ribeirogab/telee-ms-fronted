@@ -5,6 +5,7 @@ import usersRouter from './users.routes';
 import updatesRouter from './updates.routes';
 import tasksRouter from './tasks.routes';
 import articlesRouter from './articles.routes';
+import wpPagesRouter from './wpPages.routes';
 
 const routes = Router();
 
@@ -13,6 +14,7 @@ routes.use('/users', usersRouter);
 routes.use('/updates', updatesRouter);
 routes.use('/tasks', tasksRouter);
 routes.use('/articles', articlesRouter);
+routes.use('/wp-pages', wpPagesRouter);
 
 routes.get('/', (req, res) => {
   res.json({ isRunning: true });
